@@ -1,13 +1,13 @@
+import { IExpenseData } from "@/types/ExpenseData";
 import useSWR from "swr";
-import { Expense } from "@/types/ExpenseData";
 
 // Define the fetcher function
-const fetcher = (url: string): Promise<Expense[]> =>
+const fetcher = (url: string): Promise<IExpenseData[]> =>
   fetch(url).then((res) => res.json());
 
 // Define the custom hook with generics for flexibility
 export const useFetchData = (url: string) => {
-  const { data, error } = useSWR<Expense[]>(url, fetcher);
+  const { data, error } = useSWR<IExpenseData[]>(url, fetcher);
 
   return {
     data,

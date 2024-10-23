@@ -1,5 +1,5 @@
-export interface Expense {
-  _id: number;
+export interface IExpenseData {
+  _id?: number;
   name: string;
   category: string;
   amount: number;
