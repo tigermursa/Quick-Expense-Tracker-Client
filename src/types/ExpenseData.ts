@@ -3,4 +3,5 @@ export interface IExpenseData {
   name: string;
   category: string;
   amount: number;
+  createdAt: string;
 }
