@@ -1,4 +1,5 @@
-import React from "react";
+"use client"
+
 
 import { IExpenseData } from "@/types/ExpenseData";
 import "react-toastify/dist/ReactToastify.css";
