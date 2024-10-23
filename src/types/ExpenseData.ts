@@ -3,5 +3,4 @@ export interface IExpenseData {
   name: string;
   category: string;
   amount: number;
-  date: string;
 }

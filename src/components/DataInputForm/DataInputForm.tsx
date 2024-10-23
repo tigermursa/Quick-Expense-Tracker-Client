@@ -1,24 +1,23 @@
-"use client"
-
+"use client";
 
 import { IExpenseData } from "@/types/ExpenseData";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import { useForm, SubmitHandler } from "react-hook-form";
 
-
 const DataInputForm: React.FC = () => {
   // Use React Hook Form
   const {
     register,
     handleSubmit,
+    reset, // Reset function to clear the form
     formState: { errors },
   } = useForm<IExpenseData>();
 
   // Form submission handler
   const onSubmit: SubmitHandler<IExpenseData> = async (data) => {
     try {
-      const response = await fetch(`${process.env.BASE_URL}/expenses`, {
+      const response = await fetch(`http://localhost:4000/api/v1/expenses`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -32,8 +31,9 @@ const DataInputForm: React.FC = () => {
 
       // Show success toast notification
       toast.success("Expense added successfully!");
-      // Reset the form (optional)
-      // reset();
+
+      // Reset the form fields after successful submission
+      reset();
     } catch (error) {
       // Show error toast notification
       console.log(error);
@@ -87,8 +87,10 @@ const DataInputForm: React.FC = () => {
               </option>
               <option value="Food">Food</option>
               <option value="Transport">Transport</option>
-              <option value="Entertainment">Entertainment</option>
-              <option value="Other">Other</option>
+              <option value="Family">Family</option>
+              <option value="Donate">Donate</option>
+              <option value="Shopping">Shopping</option>
+              <option value="Others">Others</option>
             </select>
             {errors.category && (
               <p className="text-red-500 text-sm">{errors.category.message}</p>
@@ -117,27 +119,6 @@ const DataInputForm: React.FC = () => {
             />
             {errors.amount && (
               <p className="text-red-500 text-sm">{errors.amount.message}</p>
-            )}
-          </div>
-
-          {/* Date */}
-          <div className="mb-4">
-            <label
-              htmlFor="date"
-              className="block text-gray-700 font-semibold mb-2"
-            >
-              Date
-            </label>
-            <input
-              type="date"
-              id="date"
-              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 ${
-                errors.date ? "border-red-500" : ""
-              }`}
-              {...register("date", { required: "Date is required" })}
-            />
-            {errors.date && (
-              <p className="text-red-500 text-sm">{errors.date.message}</p>
             )}
           </div>
 
