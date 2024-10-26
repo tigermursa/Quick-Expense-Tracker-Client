@@ -42,7 +42,7 @@ const DataInputForm: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-900">
+    <div className="flex items-center justify-center h-screen  container-style">
       <div className="w-full max-w-md p-8  rounded-lg ">
         <h2 className="mb-6 text-2xl font-bold text-center text-gray-100">What was the  Expense ?</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
