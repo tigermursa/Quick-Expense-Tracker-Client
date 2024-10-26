@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Slide, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Navbar from "@/components/Navbar/Navbar";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -42,6 +43,7 @@ export default function RootLayout({
           pauseOnHover
           theme="light"
         />
+        <Navbar />
         {children}
       </body>
     </html>
