@@ -42,15 +42,15 @@ const DataInputForm: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
-        <h2 className="mb-6 text-2xl font-bold text-center">Add New Expense</h2>
+    <div className="flex items-center justify-center h-screen bg-gray-900">
+      <div className="w-full max-w-md p-8  rounded-lg ">
+        <h2 className="mb-6 text-2xl font-bold text-center text-gray-100">What was the  Expense ?</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           {/* Name */}
           <div className="mb-4">
             <label
               htmlFor="name"
-              className="block text-gray-700 font-semibold mb-2"
+              className="block text-gray-200 font-semibold mb-2"
             >
               Name
             </label>
@@ -71,7 +71,7 @@ const DataInputForm: React.FC = () => {
           <div className="mb-4">
             <label
               htmlFor="category"
-              className="block text-gray-700 font-semibold mb-2"
+              className="block text-gray-200  font-semibold mb-2"
             >
               Category
             </label>
@@ -101,7 +101,7 @@ const DataInputForm: React.FC = () => {
           <div className="mb-4">
             <label
               htmlFor="amount"
-              className="block text-gray-700 font-semibold mb-2"
+              className="block text-gray-200  font-semibold mb-2"
             >
               Amount
             </label>
@@ -124,7 +124,7 @@ const DataInputForm: React.FC = () => {
 
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300"
+            className="w-full bg-pink-600 text-white py-2 rounded-lg hover:bg-pink-800 transition duration-300"
           >
             Add Expense
           </button>
