@@ -203,10 +203,7 @@ export const TotalExpance = () => {
   };
 
   return (
-    <div className="container p-4 mx-auto ">
-      <h2 className="text-xl font-bold mb-6 text-center">
-        Total Expenses by Category
-      </h2>
+    
       <div className="mb-8" style={{ height: "300px" }}>
         {/* Render the first Bar chart (by category) */}
         <Bar data={categoryChartData} options={categoryChartOptions} />
