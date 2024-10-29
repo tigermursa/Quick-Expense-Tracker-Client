@@ -21,6 +21,8 @@ const LoginPage: React.FC = () => {
   const onSubmit: SubmitHandler<ILoginFormInput> = async (data) => {
     try {
       await loginUser(data).unwrap();
+      console.log("from the login",loginUser);
+      // localStorage.setItem("userId", userId);
       toast.success("Login successful!");
       reset(); // Clear form after successful login
       router.push("/");
