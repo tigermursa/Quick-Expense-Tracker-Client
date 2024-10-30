@@ -111,7 +111,7 @@ const ExpensesByDateRange = () => {
               selected={startDate}
               onChange={(date) => setStartDate(date)}
               dateFormat="yyyy-MM-dd"
-              className="border p-2 rounded w-full"
+              className="border p-2 rounded w-full text-center"
               placeholderText="Select Start Date"
             />
           </div>
@@ -123,7 +123,7 @@ const ExpensesByDateRange = () => {
               selected={endDate}
               onChange={(date) => setEndDate(date)}
               dateFormat="yyyy-MM-dd"
-              className="border p-2 rounded w-full"
+              className="border p-2 rounded w-full text-center"
               placeholderText="Select End Date"
             />
           </div>
