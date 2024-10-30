@@ -65,6 +65,7 @@ const DataInputForm: React.FC = () => {
             </label>
             <input
               type="text"
+              placeholder="Write item name "
               id="name"
               className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 ${
                 errors.name ? "border-red-500" : ""
@@ -118,6 +119,7 @@ const DataInputForm: React.FC = () => {
             <input
               type="number"
               id="amount"
+              placeholder="How much was that"
               className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 ${
                 errors.amount ? "border-red-500" : ""
               }`}

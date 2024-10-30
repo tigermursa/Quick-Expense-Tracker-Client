@@ -15,7 +15,10 @@ const Navbar: React.FC = () => {
 
   const navItems = [
     { name: "Home", href: "/" },
-    { name: "Total Expenses", href: "/total-expenses" },
+    { name: "Total", href: "/total-expenses" },
+    { name: "Week", href: "/week" },
+    { name: "Month", href: "/month" },
+    { name: "Search", href: "/search" },
   ];
 
   const userData = user?.data;
