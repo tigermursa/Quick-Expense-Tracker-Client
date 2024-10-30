@@ -4,7 +4,7 @@ export function middleware(request: NextRequest): NextResponse {
   const accessToken = request.cookies.get("accessToken");
 
   // Logging for debugging
-  console.log("Access Token:", accessToken);
+  //console.log("Access Token:", accessToken);
 
   // If access token exists, proceed with the request
   if (accessToken) {
