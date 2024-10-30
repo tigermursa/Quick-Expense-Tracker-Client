@@ -47,6 +47,7 @@ export default function RootLayout({
             theme="light"
           />
           <Navbar />
+
           {children}
         </body>
       </html>

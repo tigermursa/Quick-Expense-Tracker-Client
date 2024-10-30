@@ -1,4 +1,4 @@
-import React from "react";
+"use client";
 import LogoutButton from "../Logout/LogoutButton";
 
 const Navbar = () => {

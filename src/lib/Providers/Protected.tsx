@@ -3,8 +3,16 @@
 import Loader from "@/components/Loader/Loader";
 import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
-const Protected = ({ children }: { children: React.ReactNode }) => {
+import { ReactElement } from "react";
+
+// Define the props for the Protected component
+interface ProtectedProps {
+  children: ReactElement; // children should be a React element to pass props
+}
+
+const Protected = ({ children }: ProtectedProps) => {
   const router = useRouter();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { user, loading, error } = useAuth();
 
   if (loading) {
@@ -17,8 +25,10 @@ const Protected = ({ children }: { children: React.ReactNode }) => {
 
   if (error) {
     router.push("/auth/login");
+    return null; // Early return to prevent rendering children
   }
-  console.log(user?.data);
+
+  // Clone the children element and pass the user prop to it
   return <div>{children}</div>;
 };
 
