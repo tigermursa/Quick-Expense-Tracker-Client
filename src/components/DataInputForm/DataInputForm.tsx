@@ -4,8 +4,12 @@ import { IExpenseData } from "@/types/ExpenseData";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useAuth } from "@/hooks/useAuth";
 
 const DataInputForm: React.FC = () => {
+  const { user } = useAuth();
+  const userID = user?.data?._id;
+
   // Use React Hook Form
   const {
     register,
@@ -17,12 +21,15 @@ const DataInputForm: React.FC = () => {
   // Form submission handler
   const onSubmit: SubmitHandler<IExpenseData> = async (data) => {
     try {
+      // Add userID to the data
+      const dataWithUserID = { ...data, userId: userID };
+
       const response = await fetch(`http://localhost:4000/api/v1/expenses`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(dataWithUserID),
       });
 
       if (!response.ok) {
@@ -37,7 +44,7 @@ const DataInputForm: React.FC = () => {
     } catch (error) {
       // Show error toast notification
       console.log(error);
-      toast.error("Error adding expense: ");
+      toast.error("Error adding expense.");
     }
   };
 
