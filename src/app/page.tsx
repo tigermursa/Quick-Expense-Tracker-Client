@@ -1,7 +1,8 @@
+
 import DataInputForm from "@/components/DataInputForm/DataInputForm";
 import Protected from "@/lib/Providers/Protected";
 
-const MainPage = async () => {
+const MainPage = () => {
   return (
     <div>
       <Protected>

@@ -29,8 +29,10 @@ export const useAuth = () => {
     data: user,
     error: apiError,
     isLoading: loading,
+    refetch,
   } = useGetUserQuery(userId!, {
-    skip: !userId, // Skip the API call if no userId is found
+    skip: !userId,
+    pollingInterval: 0,
   });
 
   useEffect(() => {
@@ -50,5 +52,5 @@ export const useAuth = () => {
     }
   }, [apiError]);
 
-  return { user, loading, error };
+  return { user, loading, error, refetch };
 };

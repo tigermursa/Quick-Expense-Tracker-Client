@@ -9,6 +9,7 @@ const authApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["data"],
     }),
 
     //login user
@@ -18,6 +19,7 @@ const authApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["data"],
     }),
 
     //logout user
@@ -26,6 +28,7 @@ const authApi = baseApi.injectEndpoints({
         url: `/api/v3/auth/logout`,
         method: "POST",
       }),
+      invalidatesTags: ["data"],
     }),
 
     //refresh token
@@ -42,6 +45,7 @@ const authApi = baseApi.injectEndpoints({
         url: `/api/v4/users`,
         method: "GET",
       }),
+      providesTags: ["data"],
     }),
 
     //get user
@@ -50,6 +54,7 @@ const authApi = baseApi.injectEndpoints({
         url: `/api/v4/users/${id}`,
         method: "GET",
       }),
+      providesTags: ["data"],
     }),
   }),
 });

@@ -6,7 +6,7 @@ export const baseApi = createApi({
     baseUrl: "http://localhost:4000",
     credentials: "include",
   }),
-  tagTypes: ["tasks"],
+  tagTypes: ["data"],
 
   endpoints: () => ({}),
 });

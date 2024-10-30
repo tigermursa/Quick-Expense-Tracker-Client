@@ -12,7 +12,7 @@ interface ProtectedProps {
 
 const Protected = ({ children }: ProtectedProps) => {
   const router = useRouter();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   const { user, loading, error } = useAuth();
 
   if (loading) {
@@ -23,13 +23,12 @@ const Protected = ({ children }: ProtectedProps) => {
     );
   }
 
-  if (error) {
+  if (user?.status == "200") {
+    // console.log("i am user data 200 ", user);
+    return <div>{children}</div>;
+  } else if (user?.status == "404" || error) {
     router.push("/auth/login");
-    return null; // Early return to prevent rendering children
   }
-
-  // Clone the children element and pass the user prop to it
-  return <div>{children}</div>;
 };
 
 export default Protected;

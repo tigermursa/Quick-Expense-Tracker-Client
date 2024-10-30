@@ -4,22 +4,22 @@ import { useLogoutMutation } from "@/redux/features/auth/authApi";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
-const LogoutButton: React.FC = () => {
+interface LogoutButtonProps {
+  refetch: () => void; // Define the refetch prop type
+}
+
+const LogoutButton: React.FC<LogoutButtonProps> = ({ refetch }) => {
   const [logout, { isLoading }] = useLogoutMutation();
   const router = useRouter();
 
   const handleLogout = async () => {
     try {
-      // Call the logout API with an empty object
       await logout({}).unwrap();
-
-      // Clear userId from localStorage
       localStorage.removeItem("userId");
-
-      // Notify user of successful logout
       toast.success("Logged out successfully");
-
-      // Redirect to login page
+  
+      // Trigger refetch to update the user data after logout
+      refetch(); 
       router.push("/auth/login");
     } catch (err) {
       console.error("Logout error:", err);
