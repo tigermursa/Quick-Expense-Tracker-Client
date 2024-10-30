@@ -1,9 +1,10 @@
-import React from 'react';
+import React from "react";
+import LogoutButton from "../Logout/LogoutButton";
 
 const Navbar = () => {
   const navItems = [
     { name: "Home", href: "/", icon: "" },
-    { name: "Total Expenses", href: "/total-expenses", icon: "" }
+    { name: "Total Expenses", href: "/total-expenses", icon: "" },
   ];
 
   return (
@@ -22,6 +23,9 @@ const Navbar = () => {
             </li>
           ))}
         </ul>
+        <div>
+          <LogoutButton />
+        </div>
       </div>
     </nav>
   );

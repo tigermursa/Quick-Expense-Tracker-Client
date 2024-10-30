@@ -3,6 +3,8 @@ import { useLoginMutation } from "@/redux/features/auth/authApi";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+
 interface ILoginFormInput {
   email: string;
   password: string;
@@ -16,19 +18,29 @@ const LoginPage: React.FC = () => {
     reset,
     formState: { errors },
   } = useForm<ILoginFormInput>();
-  const [loginUser, { isLoading }] = useLoginMutation();
+  const [loginUser, { isLoading, error: apiError }] = useLoginMutation();
 
   const onSubmit: SubmitHandler<ILoginFormInput> = async (data) => {
     try {
-      await loginUser(data).unwrap();
-      console.log("from the login",loginUser);
-      // localStorage.setItem("userId", userId);
+      // Extract the response from loginUser which includes the userId
+      const response = await loginUser(data).unwrap();
+
+      // Assuming response has a userId, store it in localStorage
+      if (response && response.userId) {
+        localStorage.setItem("userId", response.userId);
+      }
+
       toast.success("Login successful!");
       reset(); // Clear form after successful login
       router.push("/");
     } catch (error) {
       console.error("Login error:", error);
-      toast.error("Invalid email or password!");
+      // Type-check and handle error properly
+      if (apiError && "data" in apiError) {
+        const fetchError = apiError as FetchBaseQueryError;
+        const errorMessage = (fetchError.data as { message: string })?.message;
+        toast.error(errorMessage);
+      }
     }
   };
 
@@ -52,6 +64,7 @@ const LoginPage: React.FC = () => {
               } rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500`}
               {...register("email", {
                 required: "Email is required",
+                value: "test@gmail.com",
                 pattern: { value: /^\S+@\S+$/i, message: "Invalid email" },
               })}
             />
@@ -77,6 +90,7 @@ const LoginPage: React.FC = () => {
               } rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500`}
               {...register("password", {
                 required: "Password is required",
+                value: "123456",
                 minLength: {
                   value: 6,
                   message: "Password must be at least 6 characters long",
