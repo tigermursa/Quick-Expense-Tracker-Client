@@ -11,8 +11,20 @@ const authApi = baseApi.injectEndpoints({
       }),
       providesTags: ["data"],
     }),
+    //get ALL expance
+    getAllMyExpenses: builder.query({
+      query: ({ userId }) => ({
+        url: `/api/v1/users/${userId}`,
+        method: "GET",
+      }),
+      providesTags: ["data"],
+    }),
   }),
 });
 
 // api hooks
-export const { useGetExpensesByDateRangeQuery,useLazyGetExpensesByDateRangeQuery } = authApi;
+export const {
+  useGetExpensesByDateRangeQuery,
+  useLazyGetExpensesByDateRangeQuery,
+  useGetAllMyExpensesQuery
+} = authApi;

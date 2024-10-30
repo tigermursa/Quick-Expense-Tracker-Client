@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use client"
+"use client";
 import { useLazyGetExpensesByDateRangeQuery } from "@/redux/features/data/dataApi";
 import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
@@ -15,27 +15,39 @@ import {
   Legend,
   ArcElement,
 } from "chart.js";
+import Loader from "@/components/Loader/Loader";
+import { useAuth } from "@/hooks/useAuth";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement
+);
 
-const LastWeekExpenses = () => {
+const LastMonthExpenses = () => {
+  const { user, loading } = useAuth();
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
-  const userId = "672230b90426dbedfc068819"; // Replace with actual userId
+  const userId = user?.data?._id; // Replace with actual userId
 
-  const [trigger, { data, error, isLoading }] = useLazyGetExpensesByDateRangeQuery();
+  const [trigger, { data, error, isLoading }] =
+    useLazyGetExpensesByDateRangeQuery();
 
   useEffect(() => {
     const today = new Date();
-    const lastWeek = new Date();
-    lastWeek.setDate(today.getDate() - 7);
-    setStartDate(lastWeek);
+    const lastMonth = new Date();
+    lastMonth.setDate(today.getDate() - 30);
+    setStartDate(lastMonth);
     setEndDate(today);
 
     // Trigger API call when component mounts
     trigger({
       userId,
-      startDate: formatDate(lastWeek),
+      startDate: formatDate(lastMonth),
       endDate: formatDate(today),
     });
   }, [trigger, userId]);
@@ -56,10 +68,13 @@ const LastWeekExpenses = () => {
     ],
   };
 
-  const categoryData = data?.data.reduce((acc: { [key: string]: number }, expense: any) => {
-    acc[expense.category] = (acc[expense.category] || 0) + expense.amount;
-    return acc;
-  }, {});
+  const categoryData = data?.data.reduce(
+    (acc: { [key: string]: number }, expense: any) => {
+      acc[expense.category] = (acc[expense.category] || 0) + expense.amount;
+      return acc;
+    },
+    {}
+  );
 
   const categoryChartData = {
     labels: Object.keys(categoryData || {}),
@@ -77,14 +92,18 @@ const LastWeekExpenses = () => {
       },
     ],
   };
-
+  if (loading) {
+    return <Loader />;
+  }
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full  flex flex-col justify-center items-center">
-        <h1 className="text-2xl font-bold text-center mb-6">Last Week Expenses</h1>
+        <h1 className="text-2xl font-bold text-center mb-6">
+          Last Month Expenses
+        </h1>
 
         {/* Date Pickers */}
-        <div className="mb-6 space-y-4 flex  flex-col justify-center items-center">
+        <div className="mb-6 space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Start Date:
@@ -160,4 +179,4 @@ const LastWeekExpenses = () => {
   );
 };
 
-export default LastWeekExpenses;
+export default LastMonthExpenses;

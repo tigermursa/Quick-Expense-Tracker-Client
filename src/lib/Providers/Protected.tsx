@@ -33,4 +33,4 @@ const Protected = ({ children }: ProtectedProps) => {
   return null; // or a fallback UI if needed
 };
 
-export default Protected;
+export default Protected; 

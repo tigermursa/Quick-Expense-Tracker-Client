@@ -1,6 +1,6 @@
 "use client";
 
-import { useFetchData } from "@/hooks/useFetchData";
+import { useGetAllMyExpensesQuery } from "@/redux/features/data/dataApi"; // Make sure this is the correct import path
 import { IExpenseData } from "@/types/ExpenseData";
 import { Bar, Pie } from "react-chartjs-2";
 import {
@@ -14,6 +14,7 @@ import {
   ArcElement,
 } from "chart.js";
 import Loader from "../Loader/Loader";
+import { useAuth } from "@/hooks/useAuth";
 
 ChartJS.register(
   CategoryScale,
@@ -26,17 +27,23 @@ ChartJS.register(
 );
 
 export const TotalExpance = () => {
-  const { data, error, isLoading } = useFetchData(
-    "http://localhost:4000/api/v1/expenses"
-  );
+  const { user, loading } = useAuth();
+  const userId = user?.data?._id;
+
+  // Fetch expenses using the RTK Query hook
+  const { data, error, isLoading } = useGetAllMyExpensesQuery({ userId });
 
   if (isLoading)
     return (
-      <div className="">
+      <div>
         <Loader />
       </div>
     );
-  if (error) return <div className="text-center py-4 text-red-600">Failed to load data</div>;
+
+  if (error)
+    return (
+      <div className="text-center py-4 text-red-600">Failed to load data</div>
+    );
 
   // Group expenses by category and calculate the total amount for each category
   const categoryTotals: { [category: string]: number } = {};
@@ -201,7 +208,9 @@ export const TotalExpance = () => {
       },
     },
   };
-
+  if (loading) {
+    return <Loader />;
+  }
   return (
     <div className="container p-4 mx-auto ">
       <h2 className="text-xl font-bold mb-6 text-center">
@@ -254,11 +263,7 @@ export const TotalExpance = () => {
                   ${expense.amount.toFixed(2)}
                 </td>
                 <td className="py-2 px-3 text-xs text-center border-b border-gray-300">
-                  {new Date(expense.createdAt).toLocaleDateString("en-US", {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric",
-                  })}
+                  {new Date(expense.date).toLocaleDateString()}
                 </td>
               </tr>
             ))}
