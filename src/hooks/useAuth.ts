@@ -18,7 +18,7 @@ export const useAuth = () => {
     const id = localStorage.getItem("userId");
     if (id) {
       setUserId(id);
-      console.log(id);
+      // console.log(id);
     } else {
       setError("No user ID found in local storage");
     }

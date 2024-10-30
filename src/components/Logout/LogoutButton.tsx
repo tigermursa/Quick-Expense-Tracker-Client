@@ -31,7 +31,7 @@ const LogoutButton: React.FC<LogoutButtonProps> = ({ refetch }) => {
     <button
       onClick={handleLogout}
       disabled={isLoading}
-      className="py-2 px-4 bg-red-600 text-white rounded-md hover:bg-red-700"
+      className=" w-[70%] px-2 text-red-700  text-lg text-start"
     >
       {isLoading ? "Logging out..." : "Logout"}
     </button>
