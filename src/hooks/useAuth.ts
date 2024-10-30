@@ -33,6 +33,9 @@ export const useAuth = () => {
   } = useGetUserQuery(userId!, {
     skip: !userId,
     pollingInterval: 0,
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+    refetchOnMountOrArgChange: true,
   });
 
   useEffect(() => {
@@ -46,7 +49,7 @@ export const useAuth = () => {
         setError(errorMessage);
       } else {
         // Handle generic SerializedError or other errors
-        console.log(apiError);
+        // console.log(apiError);
         setError("An unknown error occurred");
       }
     }
