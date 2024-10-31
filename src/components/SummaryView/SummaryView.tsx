@@ -8,7 +8,7 @@ const SummaryView = () => {
     userId,
   });
 
-  if (isLoading) return <p className="text-center text-lg">Loading...</p>;
+  if (isLoading) return <p className="text-center text-lg text-white">Please wiat...</p>;
   if (isError || !data?.data)
     return <p className="text-center text-lg">Error loading summary data.</p>;
 

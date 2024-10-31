@@ -1,10 +1,13 @@
 import Navbar from "@/components/Navbar/Navbar";
+import Protected from "@/lib/Providers/Protected";
 
 const layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
-      <Navbar />
-      {children}
+      <Protected>
+        <Navbar />
+        {children}
+      </Protected>
     </div>
   );
 };

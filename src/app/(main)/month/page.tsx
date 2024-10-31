@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Bar, Pie } from "react-chartjs-2";
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -33,7 +34,11 @@ const LastMonthExpenses = () => {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const userId = user?.data?._id; // Replace with actual userId
+  const [isClient, setIsClient] = useState(false);
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   const [trigger, { data, error, isLoading }] =
     useLazyGetExpensesByDateRangeQuery();
 
@@ -94,6 +99,10 @@ const LastMonthExpenses = () => {
   };
   if (loading) {
     return <Loader />;
+  }
+
+  if (!isClient) {
+    return null;
   }
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">

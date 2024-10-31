@@ -33,10 +33,12 @@ const LastWeekExpenses = () => {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const userId = user?.data?._id;
-
+  const [isClient, setIsClient] = useState(false);
   const [trigger, { data, error, isLoading }] =
     useLazyGetExpensesByDateRangeQuery();
-
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   useEffect(() => {
     const today = new Date();
     const lastWeek = new Date();
@@ -100,7 +102,9 @@ const LastWeekExpenses = () => {
   if (loading) {
     return <Loader />;
   }
-
+  if (!isClient) {
+    return null;
+  }
   return (
     <div className="container mx-auto p-4">
       <div className="flex flex-col items-center">
@@ -168,9 +172,9 @@ const LastWeekExpenses = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.data.map((expense: any,index:number) => (
+                  {data.data.map((expense: any, index: number) => (
                     <tr key={expense._id}>
-                      <td className="border px-4 py-2 w-4">{index +1}</td>
+                      <td className="border px-4 py-2 w-4">{index + 1}</td>
                       <td className="border px-4 py-2">{expense?.name}</td>
                       <td className="border px-4 py-2 text-right">
                         &#2547; {expense?.amount}

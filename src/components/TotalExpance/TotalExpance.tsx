@@ -17,6 +17,7 @@ import {
 } from "chart.js";
 import Loader from "../Loader/Loader";
 import { useAuth } from "@/hooks/useAuth";
+import { useEffect, useState } from "react";
 
 // Register Chart.js components
 ChartJS.register(
@@ -34,7 +35,11 @@ ChartJS.register(
 export const TotalExpance = () => {
   const { user } = useAuth();
   const userId = user?.data?._id;
+  const [isClient, setIsClient] = useState(false);
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   // Fetch expenses using the RTK Query hook
   const { data, error, isLoading } = useGetAllMyExpensesQuery(
     { userId },
@@ -203,6 +208,11 @@ export const TotalExpance = () => {
       y: { beginAtZero: true, title: { display: true, text: "Amount ($)" } },
     },
   };
+
+
+  if (!isClient) {
+    return null;
+  }
 
   return (
     <div className="p-3 md:p-5 lg:p-10 mx-auto bg-gray-200">
