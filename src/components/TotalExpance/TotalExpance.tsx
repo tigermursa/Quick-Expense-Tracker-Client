@@ -32,19 +32,26 @@ ChartJS.register(
 );
 
 export const TotalExpance = () => {
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
   const userId = user?.data?._id;
 
   // Fetch expenses using the RTK Query hook
-  const { data, error, isLoading } = useGetAllMyExpensesQuery({ userId });
+  const { data, error, isLoading } = useGetAllMyExpensesQuery(
+    { userId },
+    { skip: !userId }
+  );
 
   if (isLoading) return <Loader />;
-  if (error) return <div className="text-center py-4 text-red-600">Failed to load data</div>;
+  if (error)
+    return (
+      <div className="text-center py-4 text-red-600">Failed to load data</div>
+    );
 
   // Group expenses by category and calculate total for each category
   const categoryTotals: { [category: string]: number } = {};
   data?.data?.forEach((expense: IExpenseData) => {
-    categoryTotals[expense.category] = (categoryTotals[expense.category] || 0) + expense.amount;
+    categoryTotals[expense.category] =
+      (categoryTotals[expense.category] || 0) + expense.amount;
   });
 
   // Prepare the data for the bar chart (by category)
@@ -115,7 +122,9 @@ export const TotalExpance = () => {
 
   // Prepare the data for the second bar chart (by item name)
   const itemNames = data?.data?.map((expense: IExpenseData) => expense.name);
-  const itemAmounts = data?.data?.map((expense: IExpenseData) => expense.amount);
+  const itemAmounts = data?.data?.map(
+    (expense: IExpenseData) => expense.amount
+  );
 
   const itemChartData = {
     labels: itemNames,
@@ -197,8 +206,10 @@ export const TotalExpance = () => {
 
   return (
     <div className="container p-4 mx-auto">
-      <h2 className="text-xl font-bold mb-6 text-center">Total Expenses by Category</h2>
-      
+      <h2 className="text-xl font-bold mb-6 text-center">
+        Total Expenses &#2547;{data?.totalAmount}
+      </h2>
+
       {/* Bar Chart for Categories */}
       <div className="mb-8" style={{ height: "300px" }}>
         <Bar data={categoryChartData} options={categoryChartOptions} />
@@ -209,14 +220,51 @@ export const TotalExpance = () => {
         <Pie data={pieChartData} options={pieOptions} />
       </div>
 
-      {/* Bar Chart for Items */}
-      <div className="mb-8" style={{ height: "300px" }}>
-        <Bar data={itemChartData} options={itemChartOptions} />
-      </div>
-
       {/* Line Chart for Daily Expenses */}
       <div className="mb-8" style={{ height: "300px" }}>
         <Line data={dailyExpenseChartData} options={dailyExpenseChartOptions} />
+      </div>
+
+      {/* Daily Expenses Table */}
+      <div className="mt-8 overflow-x-auto">
+        <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+          <thead>
+            <tr className="bg-gray-200">
+              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-300">
+                Date
+              </th>
+              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-300">
+                Total Expense
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {dates.map((date, index) => (
+              <tr key={date} className="hover:bg-gray-100">
+                <td className="py-2 px-3 text-xs text-center border-b border-gray-300">
+                  {date}
+                </td>
+                <td className="py-2 px-3 text-xs text-center border-b border-gray-300">
+                  ${dailyAmounts[index].toFixed(2)}
+                </td>
+              </tr>
+            ))}
+            {/* Total Row */}
+            <tr className="bg-gray-100 font-bold">
+              <td className="py-2 px-3 text-xs text-center border-t border-gray-300">
+                Total
+              </td>
+              <td className="py-2 px-3 text-xs text-center border-t border-gray-300">
+                &#2547;{data?.totalAmount}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      {/* Bar Chart for Items */}
+      <div className="mb-8" style={{ height: "300px" }}>
+        <Bar data={itemChartData} options={itemChartOptions} />
       </div>
 
       {/* Expense Table */}
@@ -224,18 +272,32 @@ export const TotalExpance = () => {
         <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
           <thead>
             <tr className="bg-gray-200">
-              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-300">Name</th>
-              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-300">Category</th>
-              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-300">Amount</th>
-              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-300">Date</th>
+              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-300">
+                Name
+              </th>
+              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-300">
+                Category
+              </th>
+              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-300">
+                Amount
+              </th>
+              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-300">
+                Date
+              </th>
             </tr>
           </thead>
           <tbody>
             {data?.data?.map((expense: IExpenseData) => (
               <tr key={expense._id} className="hover:bg-gray-100">
-                <td className="py-2 px-3 text-xs text-center border-b border-gray-300">{expense.name}</td>
-                <td className="py-2 px-3 text-xs text-center border-b border-gray-300">{expense.category}</td>
-                <td className="py-2 px-3 text-xs text-center border-b border-gray-300">${expense.amount.toFixed(2)}</td>
+                <td className="py-2 px-3 text-xs text-center border-b border-gray-300">
+                  {expense.name}
+                </td>
+                <td className="py-2 px-3 text-xs text-center border-b border-gray-300">
+                  {expense.category}
+                </td>
+                <td className="py-2 px-3 text-xs text-center border-b border-gray-300">
+                  ${expense.amount.toFixed(2)}
+                </td>
                 <td className="py-2 px-3 text-xs text-center border-b border-gray-300">
                   {new Date(expense.createdAt).toLocaleDateString("en-GB", {
                     day: "2-digit",
