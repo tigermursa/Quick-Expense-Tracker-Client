@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useAuth } from "@/hooks/useAuth";
+import SummaryView from "../SummaryView/SummaryView";
 
 const DataInputForm: React.FC = () => {
   const { user } = useAuth();
@@ -49,10 +50,11 @@ const DataInputForm: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen pt-2  container-style">
+    <div className="flex flex-col items-center justify-center h-screen pt-2  container-style">
+      <SummaryView />
       <div className="w-full max-w-md p-8  rounded-lg ">
         <h2 className="mb-6 text-2xl font-bold text-center text-gray-100">
-          What was the Expense ?
+          What was the Expense today ?
         </h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           {/* Name */}
