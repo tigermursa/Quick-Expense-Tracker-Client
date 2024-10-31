@@ -109,7 +109,7 @@ const LastWeekExpenses = () => {
         </h1>
 
         {/* Date Pickers */}
-        <div className="mb-6 space-y-4 flex flex-col items-center">
+        <div className="mb-6 space-y-4 flex flex-col items-center pointer-events-none">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Start Date:
@@ -118,7 +118,7 @@ const LastWeekExpenses = () => {
               selected={startDate}
               onChange={(date) => setStartDate(date)}
               dateFormat="yyyy-MM-dd"
-              className="border p-2 rounded w-full text-center"
+              className="border p-2  font-bold rounded w-full text-center"
               placeholderText="Select Start Date"
             />
           </div>
@@ -130,7 +130,7 @@ const LastWeekExpenses = () => {
               selected={endDate}
               onChange={(date) => setEndDate(date)}
               dateFormat="yyyy-MM-dd"
-              className="border p-2 rounded w-full text-center"
+              className="border p-2 font-bold rounded w-full text-center"
               placeholderText="Select End Date"
             />
           </div>
