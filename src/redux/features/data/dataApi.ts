@@ -19,6 +19,14 @@ const authApi = baseApi.injectEndpoints({
       }),
       providesTags: ["data"],
     }),
+    //get expance for 7 30
+    geExpensesDataForHome: builder.query({
+      query: ({ userId }) => ({
+        url: `/api/v1/expenses/home/summary/${userId}`,
+        method: "GET",
+      }),
+      providesTags: ["data"],
+    }),
   }),
 });
 
@@ -26,5 +34,6 @@ const authApi = baseApi.injectEndpoints({
 export const {
   useGetExpensesByDateRangeQuery,
   useLazyGetExpensesByDateRangeQuery,
-  useGetAllMyExpensesQuery
+  useGetAllMyExpensesQuery,
+  useGeExpensesDataForHomeQuery,
 } = authApi;
