@@ -3,11 +3,16 @@ import { useLoginMutation } from "@/redux/features/auth/authApi";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 interface ILoginFormInput {
   email: string;
   password: string;
+}
+
+interface IError {
+  data: {
+    message: string;
+  };
 }
 
 const LoginPage: React.FC = () => {
@@ -18,7 +23,7 @@ const LoginPage: React.FC = () => {
     reset,
     formState: { errors },
   } = useForm<ILoginFormInput>();
-  const [loginUser, { isLoading, error: apiError }] = useLoginMutation();
+  const [loginUser, { isLoading }] = useLoginMutation();
 
   const onSubmit: SubmitHandler<ILoginFormInput> = async (data) => {
     try {
@@ -34,20 +39,17 @@ const LoginPage: React.FC = () => {
       reset(); // Clear form after successful login
       router.push("/");
     } catch (error) {
-      console.error("Login error:", error);
-      // Type-check and handle error properly
-      if (apiError && "data" in apiError) {
-        const fetchError = apiError as FetchBaseQueryError;
-        const errorMessage = (fetchError.data as { message: string })?.message;
-        toast.error(errorMessage);
-      }
+      const err = error as IError;
+      toast.error(err.data.message);
     }
   };
 
   return (
     <div className="flex justify-center items-center h-screen container-style">
       <div className="w-full max-w-md  p-6 ">
-        <h2 className="text-2xl font-bold mb-6 text-gray-100 text-center">Login</h2>
+        <h2 className="text-2xl font-bold mb-6 text-gray-100 text-center">
+          Login
+        </h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label
@@ -55,7 +57,7 @@ const LoginPage: React.FC = () => {
               htmlFor="email"
             >
               Email
-            </label> 
+            </label>
             <input
               id="email"
               type="email"
