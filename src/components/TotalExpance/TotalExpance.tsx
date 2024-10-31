@@ -1,8 +1,8 @@
 "use client";
 
-import { useGetAllMyExpensesQuery } from "@/redux/features/data/dataApi"; // Make sure this is the correct import path
+import { useGetAllMyExpensesQuery } from "@/redux/features/data/dataApi";
 import { IExpenseData } from "@/types/ExpenseData";
-import { Bar, Pie } from "react-chartjs-2";
+import { Bar, Pie, Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,10 +12,13 @@ import {
   Tooltip,
   Legend,
   ArcElement,
+  PointElement,
+  LineElement,
 } from "chart.js";
 import Loader from "../Loader/Loader";
 import { useAuth } from "@/hooks/useAuth";
 
+// Register Chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -23,7 +26,9 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  ArcElement
+  ArcElement,
+  PointElement,
+  LineElement
 );
 
 export const TotalExpance = () => {
@@ -33,27 +38,13 @@ export const TotalExpance = () => {
   // Fetch expenses using the RTK Query hook
   const { data, error, isLoading } = useGetAllMyExpensesQuery({ userId });
 
-  if (isLoading)
-    return (
-      <div>
-        <Loader />
-      </div>
-    );
+  if (isLoading) return <Loader />;
+  if (error) return <div className="text-center py-4 text-red-600">Failed to load data</div>;
 
-  if (error)
-    return (
-      <div className="text-center py-4 text-red-600">Failed to load data</div>
-    );
-
-  // Group expenses by category and calculate the total amount for each category
+  // Group expenses by category and calculate total for each category
   const categoryTotals: { [category: string]: number } = {};
-
   data?.data?.forEach((expense: IExpenseData) => {
-    if (categoryTotals[expense.category]) {
-      categoryTotals[expense.category] += expense.amount;
-    } else {
-      categoryTotals[expense.category] = expense.amount;
-    }
+    categoryTotals[expense.category] = (categoryTotals[expense.category] || 0) + expense.amount;
   });
 
   // Prepare the data for the bar chart (by category)
@@ -75,18 +66,8 @@ export const TotalExpance = () => {
           "rgba(255, 159, 64, 0.6)",
           "rgba(199, 199, 199, 0.6)",
         ],
-        borderColor: [
-          "rgba(255, 99, 132, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(153, 102, 255, 1)",
-          "rgba(255, 159, 64, 1)",
-          "rgba(199, 199, 199, 1)",
-        ],
         borderWidth: 1,
         barThickness: 30,
-        borderRadius: 0,
       },
     ],
   };
@@ -95,23 +76,12 @@ export const TotalExpance = () => {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: {
-        position: "top" as const,
-      },
-      title: {
-        display: true,
-        text: "Total Expenses by Category",
-      },
+      legend: { position: "top" as const },
+      title: { display: true, text: "Total Expenses by Category" },
     },
     scales: {
-      x: {
-        beginAtZero: true,
-        barPercentage: 0.7,
-        categoryPercentage: 0.5,
-      },
-      y: {
-        beginAtZero: true,
-      },
+      x: { beginAtZero: true, barPercentage: 0.7, categoryPercentage: 0.5 },
+      y: { beginAtZero: true },
     },
   };
 
@@ -138,21 +108,14 @@ export const TotalExpance = () => {
   const pieOptions = {
     responsive: true,
     plugins: {
-      legend: {
-        position: "bottom" as const,
-      },
-      title: {
-        display: true,
-        text: "Expense Distribution by Category",
-      },
+      legend: { position: "bottom" as const },
+      title: { display: true, text: "Expense Distribution by Category" },
     },
   };
 
   // Prepare the data for the second bar chart (by item name)
   const itemNames = data?.data?.map((expense: IExpenseData) => expense.name);
-  const itemAmounts = data?.data?.map(
-    (expense: IExpenseData) => expense.amount
-  );
+  const itemAmounts = data?.data?.map((expense: IExpenseData) => expense.amount);
 
   const itemChartData = {
     labels: itemNames,
@@ -169,18 +132,8 @@ export const TotalExpance = () => {
           "rgba(199, 199, 199, 0.6)",
           "rgba(255, 99, 132, 0.6)",
         ],
-        borderColor: [
-          "rgba(255, 159, 64, 1)",
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(153, 102, 255, 1)",
-          "rgba(199, 199, 199, 1)",
-          "rgba(255, 99, 132, 1)",
-        ],
         borderWidth: 1,
         barThickness: 30,
-        borderRadius: 0,
       },
     ],
   };
@@ -189,81 +142,106 @@ export const TotalExpance = () => {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: {
-        position: "top" as const,
-      },
-      title: {
-        display: true,
-        text: "Items Graph",
-      },
+      legend: { position: "top" as const },
+      title: { display: true, text: "Items Graph" },
     },
     scales: {
-      x: {
-        beginAtZero: true,
-        barPercentage: 0.7,
-        categoryPercentage: 0.5,
-      },
-      y: {
-        beginAtZero: true,
-      },
+      x: { beginAtZero: true, barPercentage: 0.7, categoryPercentage: 0.5 },
+      y: { beginAtZero: true },
     },
   };
-  if (loading) {
-    return <Loader />;
-  }
+
+  // Group expenses by date and calculate total for each day
+  const dailyTotals: { [date: string]: number } = {};
+  data?.data?.forEach((expense: IExpenseData) => {
+    const date = new Date(expense.createdAt).toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+    dailyTotals[date] = (dailyTotals[date] || 0) + expense.amount;
+  });
+
+  // Prepare the data for the line chart (daily expenses)
+  const dates = Object.keys(dailyTotals);
+  const dailyAmounts = Object.values(dailyTotals);
+
+  const dailyExpenseChartData = {
+    labels: dates,
+    datasets: [
+      {
+        label: "Daily Total Expenses",
+        data: dailyAmounts,
+        borderColor: "rgba(54, 162, 235, 1)",
+        backgroundColor: "rgba(54, 162, 235, 0.3)",
+        borderWidth: 2,
+        pointRadius: 5,
+        pointHoverRadius: 7,
+        tension: 0.4,
+      },
+    ],
+  };
+
+  const dailyExpenseChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: "top" as const },
+      title: { display: true, text: "Flow of Daily Total Expenses" },
+    },
+    scales: {
+      x: { beginAtZero: true, title: { display: true, text: "Date" } },
+      y: { beginAtZero: true, title: { display: true, text: "Amount ($)" } },
+    },
+  };
+
   return (
-    <div className="container p-4 mx-auto ">
-      <h2 className="text-xl font-bold mb-6 text-center">
-        Total Expenses by Category
-      </h2>
+    <div className="container p-4 mx-auto">
+      <h2 className="text-xl font-bold mb-6 text-center">Total Expenses by Category</h2>
+      
+      {/* Bar Chart for Categories */}
       <div className="mb-8" style={{ height: "300px" }}>
-        {/* Render the first Bar chart (by category) */}
         <Bar data={categoryChartData} options={categoryChartOptions} />
       </div>
 
-      {/* Render the Pie chart (by category) */}
+      {/* Pie Chart for Categories */}
       <div className="mb-8 flex justify-center" style={{ height: "300px" }}>
         <Pie data={pieChartData} options={pieOptions} />
       </div>
 
-      {/* Render the second Bar chart (by item name) */}
+      {/* Bar Chart for Items */}
       <div className="mb-8" style={{ height: "300px" }}>
         <Bar data={itemChartData} options={itemChartOptions} />
       </div>
 
-      {/* Updated Table */}
+      {/* Line Chart for Daily Expenses */}
+      <div className="mb-8" style={{ height: "300px" }}>
+        <Line data={dailyExpenseChartData} options={dailyExpenseChartOptions} />
+      </div>
+
+      {/* Expense Table */}
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
           <thead>
             <tr className="bg-gray-200">
-              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-300">
-                Name
-              </th>
-              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-300">
-                Category
-              </th>
-              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-300">
-                Amount
-              </th>
-              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-300">
-                Date
-              </th>
+              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-300">Name</th>
+              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-300">Category</th>
+              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-300">Amount</th>
+              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-300">Date</th>
             </tr>
           </thead>
           <tbody>
             {data?.data?.map((expense: IExpenseData) => (
               <tr key={expense._id} className="hover:bg-gray-100">
+                <td className="py-2 px-3 text-xs text-center border-b border-gray-300">{expense.name}</td>
+                <td className="py-2 px-3 text-xs text-center border-b border-gray-300">{expense.category}</td>
+                <td className="py-2 px-3 text-xs text-center border-b border-gray-300">${expense.amount.toFixed(2)}</td>
                 <td className="py-2 px-3 text-xs text-center border-b border-gray-300">
-                  {expense.name}
-                </td>
-                <td className="py-2 px-3 text-xs text-center border-b border-gray-300">
-                  {expense.category}
-                </td>
-                <td className="py-2 px-3 text-xs text-center border-b border-gray-300">
-                  ${expense.amount.toFixed(2)}
-                </td>
-                <td className="py-2 px-3 text-xs text-center border-b border-gray-300">
-                  {new Date(expense.date).toLocaleDateString()}
+                  {new Date(expense.createdAt).toLocaleDateString("en-GB", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                  })}
                 </td>
               </tr>
             ))}
@@ -273,3 +251,5 @@ export const TotalExpance = () => {
     </div>
   );
 };
+
+export default TotalExpance;

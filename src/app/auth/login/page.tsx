@@ -66,7 +66,7 @@ const LoginPage: React.FC = () => {
               } rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500`}
               {...register("email", {
                 required: "Email is required",
-                value: "test@gmail.com",
+                
                 pattern: { value: /^\S+@\S+$/i, message: "Invalid email" },
               })}
             />
@@ -92,7 +92,7 @@ const LoginPage: React.FC = () => {
               } rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500`}
               {...register("password", {
                 required: "Password is required",
-                value: "123456",
+                
                 minLength: {
                   value: 6,
                   message: "Password must be at least 6 characters long",

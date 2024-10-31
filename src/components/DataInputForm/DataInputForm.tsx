@@ -95,8 +95,9 @@ const DataInputForm: React.FC = () => {
               <option value="" disabled>
                 Select a category
               </option>
-              <option value="Food">Food</option>
               <option value="Bazar">Bazar</option>
+              <option value="Food">Food</option>
+
               <option value="Transport">Transport</option>
               <option value="Family">Family</option>
               <option value="Donate">Donate</option>

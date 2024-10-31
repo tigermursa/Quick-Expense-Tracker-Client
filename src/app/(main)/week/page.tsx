@@ -32,7 +32,7 @@ const LastWeekExpenses = () => {
   const { user, loading } = useAuth();
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
-  const userId = user?.data?._id; // Replace with actual userId
+  const userId = user?.data?._id;
 
   const [trigger, { data, error, isLoading }] =
     useLazyGetExpensesByDateRangeQuery();
@@ -44,7 +44,6 @@ const LastWeekExpenses = () => {
     setStartDate(lastWeek);
     setEndDate(today);
 
-    // Trigger API call when component mounts
     trigger({
       userId,
       startDate: formatDate(lastWeek),
@@ -92,18 +91,25 @@ const LastWeekExpenses = () => {
       },
     ],
   };
+
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+  };
+
   if (loading) {
     return <Loader />;
   }
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full  flex flex-col justify-center items-center">
+    <div className="container mx-auto p-4">
+      <div className="flex flex-col items-center">
         <h1 className="text-2xl font-bold text-center mb-6">
           Last Week Expenses
         </h1>
 
         {/* Date Pickers */}
-        <div className="mb-6 space-y-4 flex  flex-col justify-center items-center">
+        <div className="mb-6 space-y-4 flex flex-col items-center">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Start Date:
@@ -131,41 +137,43 @@ const LastWeekExpenses = () => {
         </div>
 
         {/* Display Loading, Error, or Data */}
-        <div className="mt-6">
+        <div className="w-full flex flex-col items-center mt-6">
           {isLoading && <p className="text-center text-gray-600">Loading...</p>}
           {error && (
             <p className="text-center text-red-600">Error fetching data</p>
           )}
           {data && (
-            <div className="mt-4">
+            <div className="mt-4 w-full flex flex-col items-center space-y-8">
               <h2 className="text-lg font-semibold text-center">
-                Total Expenses: ${data.total}
+                Total Expenses: {data?.total} &#2547;
               </h2>
 
               {/* Item Bar Chart */}
-              <div className="mt-4">
-                <Bar data={itemChartData} />
+              <div className="w-full md:w-3/4 lg:w-[100%] h-80">
+                <Bar data={itemChartData} options={chartOptions} />
               </div>
 
               {/* Category Pie Chart */}
-              <div className="mt-4">
-                <Pie data={categoryChartData} />
+              <div className="w-full md:w-3/4 lg:w-1/2 h-80">
+                <Pie data={categoryChartData} options={chartOptions} />
               </div>
 
               {/* Expense Table */}
-              <table className="table-auto w-full mt-4 border">
+              <table className="table-auto w-full md:w-3/4 lg:w-1/2 mt-4 border">
                 <thead>
                   <tr className="bg-gray-200">
+                    <th className="px-4 py-2 text-left">Index</th>
                     <th className="px-4 py-2 text-left">Name</th>
                     <th className="px-4 py-2 text-right">Amount</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {data.data.map((expense: any) => (
+                  {data.data.map((expense: any,index:number) => (
                     <tr key={expense._id}>
+                      <td className="border px-4 py-2 w-4">{index +1}</td>
                       <td className="border px-4 py-2">{expense?.name}</td>
                       <td className="border px-4 py-2 text-right">
-                        ${expense?.amount}
+                        &#2547; {expense?.amount}
                       </td>
                     </tr>
                   ))}
