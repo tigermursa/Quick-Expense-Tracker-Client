@@ -62,7 +62,7 @@ export const TotalExpance = () => {
     labels: categories,
     datasets: [
       {
-        label: "Amount ($)",
+        label: "Amount (৳)",
         data: totalAmounts,
         backgroundColor: [
           "rgba(255, 99, 132, 0.6)",
@@ -97,7 +97,7 @@ export const TotalExpance = () => {
     labels: categories,
     datasets: [
       {
-        label: "Amount ($)",
+        label: "Amount (৳)",
         data: totalAmounts,
         backgroundColor: [
           "rgba(255, 99, 132, 0.6)",
@@ -130,7 +130,7 @@ export const TotalExpance = () => {
     labels: itemNames,
     datasets: [
       {
-        label: "Items ($)",
+        label: "Items (৳)",
         data: itemAmounts,
         backgroundColor: [
           "rgba(255, 159, 64, 0.6)",
@@ -205,7 +205,7 @@ export const TotalExpance = () => {
   };
 
   return (
-    <div className="container p-4 mx-auto">
+    <div className="p-3 md:p-5 lg:p-10 mx-auto bg-gray-200">
       <h2 className="text-xl font-bold mb-6 text-center">
         Total Expenses &#2547;{data?.totalAmount}
       </h2>
@@ -227,13 +227,13 @@ export const TotalExpance = () => {
 
       {/* Daily Expenses Table */}
       <div className="mt-8 overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+        <table className="min-w-full bg-gray-200 border border-gray-400 rounded-lg shadow-md">
           <thead>
             <tr className="bg-gray-200">
-              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-300">
+              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-400">
                 Date
               </th>
-              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-300">
+              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-400">
                 Total Expense
               </th>
             </tr>
@@ -241,20 +241,20 @@ export const TotalExpance = () => {
           <tbody>
             {dates.map((date, index) => (
               <tr key={date} className="hover:bg-gray-100">
-                <td className="py-2 px-3 text-xs text-center border-b border-gray-300">
+                <td className="py-2 px-3 text-xs text-center border-b border-gray-400">
                   {date}
                 </td>
-                <td className="py-2 px-3 text-xs text-center border-b border-gray-300">
+                <td className="py-2 px-3 text-xs text-center border-b border-gray-400">
                   ${dailyAmounts[index].toFixed(2)}
                 </td>
               </tr>
             ))}
             {/* Total Row */}
-            <tr className="bg-gray-100 font-bold">
-              <td className="py-2 px-3 text-xs text-center border-t border-gray-300">
+            <tr className="bg-gray-200 font-bold">
+              <td className="py-2 px-3 text-xs text-center border-t border-gray-400">
                 Total
               </td>
-              <td className="py-2 px-3 text-xs text-center border-t border-gray-300">
+              <td className="py-2 px-3 text-xs text-center border-t border-gray-400">
                 &#2547;{data?.totalAmount}
               </td>
             </tr>
@@ -269,19 +269,19 @@ export const TotalExpance = () => {
 
       {/* Expense Table */}
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+        <table className="min-w-full bg-gray-200 border border-gray-400 rounded-lg shadow-md">
           <thead>
             <tr className="bg-gray-200">
-              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-300">
+              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-400">
                 Name
               </th>
-              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-300">
+              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-400">
                 Category
               </th>
-              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-300">
+              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-400">
                 Amount
               </th>
-              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-300">
+              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-400">
                 Date
               </th>
             </tr>
@@ -289,16 +289,16 @@ export const TotalExpance = () => {
           <tbody>
             {data?.data?.map((expense: IExpenseData) => (
               <tr key={expense._id} className="hover:bg-gray-100">
-                <td className="py-2 px-3 text-xs text-center border-b border-gray-300">
+                <td className="py-2 px-3 text-xs text-center border-b border-gray-400">
                   {expense.name}
                 </td>
-                <td className="py-2 px-3 text-xs text-center border-b border-gray-300">
+                <td className="py-2 px-3 text-xs text-center border-b border-gray-400">
                   {expense.category}
                 </td>
-                <td className="py-2 px-3 text-xs text-center border-b border-gray-300">
+                <td className="py-2 px-3 text-xs text-center border-b border-gray-400">
                   ${expense.amount.toFixed(2)}
                 </td>
-                <td className="py-2 px-3 text-xs text-center border-b border-gray-300">
+                <td className="py-2 px-3 text-xs text-center border-b border-gray-400">
                   {new Date(expense.createdAt).toLocaleDateString("en-GB", {
                     day: "2-digit",
                     month: "short",
