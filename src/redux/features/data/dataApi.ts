@@ -27,6 +27,15 @@ const authApi = baseApi.injectEndpoints({
       }),
       providesTags: ["data"],
     }),
+    //iput data
+    maininputapi: builder.mutation({
+      query: (data) => ({
+        url: `/api/v1/expenses`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["data"],
+    }),
   }),
 });
 
@@ -36,4 +45,5 @@ export const {
   useLazyGetExpensesByDateRangeQuery,
   useGetAllMyExpensesQuery,
   useGeExpensesDataForHomeQuery,
+  useMaininputapiMutation,
 } = authApi;

@@ -6,36 +6,29 @@ import { toast } from "react-toastify";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useAuth } from "@/hooks/useAuth";
 import SummaryView from "../SummaryView/SummaryView";
+import { useMaininputapiMutation } from "@/redux/features/data/dataApi";
 
 const DataInputForm: React.FC = () => {
   const { user } = useAuth();
   const userID = user?.data?._id;
 
-  // Use React Hook Form
   const {
     register,
     handleSubmit,
-    reset, // Reset function to clear the form
+    reset,
     formState: { errors },
   } = useForm<IExpenseData>();
 
-  // Form submission handler
+  // Use the RTK mutation hook
+  const [addExpense, { isLoading }] = useMaininputapiMutation();
+
   const onSubmit: SubmitHandler<IExpenseData> = async (data) => {
     try {
       // Add userID to the data
       const dataWithUserID = { ...data, userId: userID };
 
-      const response = await fetch(`http://localhost:4000/api/v1/expenses`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dataWithUserID),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to add expense");
-      }
+      // Call the mutation
+      await addExpense(dataWithUserID).unwrap();
 
       // Show success toast notification
       toast.success("Expense added successfully!");
@@ -44,17 +37,17 @@ const DataInputForm: React.FC = () => {
       reset();
     } catch (error) {
       // Show error toast notification
-      console.log(error);
+      console.error(error);
       toast.error("Error adding expense.");
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen pt-2  container-style">
+    <div className="flex flex-col items-center justify-center h-screen pt-2 container-style">
       <SummaryView />
-      <div className="w-full max-w-md p-8  rounded-lg ">
+      <div className="w-full max-w-md p-8 rounded-lg">
         <h2 className="mb-6 text-2xl font-bold text-center text-gray-100">
-          What was the Expense today ?
+          What was the Expense today?
         </h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           {/* Name */}
@@ -67,7 +60,7 @@ const DataInputForm: React.FC = () => {
             </label>
             <input
               type="text"
-              placeholder="Write item name "
+              placeholder="Write item name"
               id="name"
               className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 ${
                 errors.name ? "border-red-500" : ""
@@ -83,7 +76,7 @@ const DataInputForm: React.FC = () => {
           <div className="mb-4">
             <label
               htmlFor="category"
-              className="block text-gray-200  font-semibold mb-2"
+              className="block text-gray-200 font-semibold mb-2"
             >
               Category
             </label>
@@ -99,7 +92,6 @@ const DataInputForm: React.FC = () => {
               </option>
               <option value="Bazar">Bazar</option>
               <option value="Food">Food</option>
-
               <option value="Transport">Transport</option>
               <option value="Family">Family</option>
               <option value="Donate">Donate</option>
@@ -115,7 +107,7 @@ const DataInputForm: React.FC = () => {
           <div className="mb-4">
             <label
               htmlFor="amount"
-              className="block text-gray-200  font-semibold mb-2"
+              className="block text-gray-200 font-semibold mb-2"
             >
               Amount
             </label>
@@ -139,9 +131,12 @@ const DataInputForm: React.FC = () => {
 
           <button
             type="submit"
-            className="w-full bg-pink-600 text-white py-2 rounded-lg hover:bg-pink-800 transition duration-300"
+            className={`w-full bg-pink-600 text-white py-2 rounded-lg hover:bg-pink-800 transition duration-300 ${
+              isLoading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            disabled={isLoading}
           >
-            Add Expense
+            {isLoading ? "Adding..." : "Add Expense"}
           </button>
         </form>
       </div>
