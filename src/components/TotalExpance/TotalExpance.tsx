@@ -137,17 +137,11 @@ export const TotalExpance = () => {
       {
         label: "Items (৳)",
         data: itemAmounts,
-        backgroundColor: [
-          "rgba(255, 159, 64, 0.6)",
-          "rgba(54, 162, 235, 0.6)",
-          "rgba(255, 206, 86, 0.6)",
-          "rgba(75, 192, 192, 0.6)",
-          "rgba(153, 102, 255, 0.6)",
-          "rgba(199, 199, 199, 0.6)",
-          "rgba(255, 99, 132, 0.6)",
-        ],
-        borderWidth: 1,
-        barThickness: 30,
+        backgroundColor: "rgba(255, 165, 0, 0.8)",
+        borderWidth: 0,
+        barThickness: 5,
+        borderRadius: { topLeft: 10, topRight: 10 },
+        barPercentage: 0.5,
       },
     ],
   };
@@ -208,7 +202,6 @@ export const TotalExpance = () => {
       y: { beginAtZero: true, title: { display: true, text: "Amount ($)" } },
     },
   };
-
 
   if (!isClient) {
     return null;
@@ -272,6 +265,7 @@ export const TotalExpance = () => {
         </table>
       </div>
 
+      <h2 className="text-center mt-10 font-bold">All Expanse Chart and List </h2>
       {/* Bar Chart for Items */}
       <div className="mb-8" style={{ height: "300px" }}>
         <Bar data={itemChartData} options={itemChartOptions} />

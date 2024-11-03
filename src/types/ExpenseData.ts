@@ -6,3 +6,15 @@ export interface IExpenseData {
   amount: number;
   createdAt: string;
 }
+
+// expense.interface.ts
+
+export interface IExpense {
+  _id: string;
+  name: string;
+  category: string;
+  amount: number;
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
+}

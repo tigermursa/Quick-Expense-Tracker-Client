@@ -36,6 +36,16 @@ const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["data"],
     }),
+
+    // getExpensesByDate
+    getSpesificDateData: builder.query({
+      query: ({ date, userId }) => ({
+        url: `/api/v1/expenses/calendar/user/${userId}/date`,
+        method: "POST",
+        body: { date },
+      }),
+      providesTags: ["data"],
+    }),
   }),
 });
 
@@ -46,4 +56,5 @@ export const {
   useGetAllMyExpensesQuery,
   useGeExpensesDataForHomeQuery,
   useMaininputapiMutation,
+  useGetSpesificDateDataQuery,
 } = authApi;
