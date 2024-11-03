@@ -100,6 +100,7 @@ const SummaryView = () => {
       <TodayExpensesModal
         showModal={showModal}
         todayExpenses={todayExpenses}
+        total={todayTotal}
         closeModal={() => setShowModal(false)}
       />
     </div>

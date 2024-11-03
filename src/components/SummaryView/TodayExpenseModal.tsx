@@ -5,12 +5,14 @@ import React from "react";
 type TodayExpensesModalProps = {
   showModal: boolean;
   todayExpenses: any[]; // You can define a more specific type if needed
+  total: string;
   closeModal: () => void;
 };
 
 const TodayExpensesModal: React.FC<TodayExpensesModalProps> = ({
   showModal,
   todayExpenses,
+  total,
   closeModal,
 }) => {
   if (!showModal) return null;
@@ -32,7 +34,7 @@ const TodayExpensesModal: React.FC<TodayExpensesModalProps> = ({
             <tr>
               <th className="px-4 py-2">#</th>
               <th className="px-4 py-2">Item</th>
-              <th className="px-4 py-2">Price</th>
+              <th className="px-4 py-2 text-right">Price</th>
             </tr>
           </thead>
           <tbody>
@@ -40,9 +42,16 @@ const TodayExpensesModal: React.FC<TodayExpensesModalProps> = ({
               <tr key={index} className="border-t">
                 <td className="px-4 py-2">{index + 1}</td>
                 <td className="px-4 py-2">{expense.name}</td>
-                <td className="px-4 py-2">৳{expense.amount}</td>
+                <td className="px-4 py-2 text-right">৳{expense.amount}</td>
               </tr>
             ))}
+            {/* Display the total at the end of the table */}
+            <tr className="border-t font-semibold">
+              <td className="px-4 py-2" colSpan={2}>
+                Total
+              </td>
+              <td className="px-4 py-2 text-right">৳{total}</td>
+            </tr>
           </tbody>
         </table>
       </div>
