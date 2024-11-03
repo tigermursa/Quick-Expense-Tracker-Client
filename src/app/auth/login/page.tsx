@@ -45,7 +45,7 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen container-style">
+    <div className="flex justify-center items-center h-screen container-style-design">
       <div className="w-full max-w-md  p-6 ">
         <h2 className="text-2xl font-bold mb-6 text-gray-100 text-center">
           Login

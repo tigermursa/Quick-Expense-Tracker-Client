@@ -1,9 +1,20 @@
 "use client";
-import React, { useState } from "react";
-import Calendar from "react-calendar"; // Using only the larger calendar for display
-import "react-calendar/dist/Calendar.css";
+
 import { useGetSpesificDateDataQuery } from "@/redux/features/data/dataApi";
-import { IExpense } from "@/types/ExpenseData";
+import React, { useState } from "react";
+import DatePicker from "react-datepicker"; // Use react-datepicker
+import "react-datepicker/dist/react-datepicker.css"; // Import styles for react-datepicker
+import "../../../app/Calendar.css";
+interface ExpenseData {
+  _id: string;
+  name: string;
+  category: string;
+  amount: number;
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
 
 const ExpenseCalendar: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -14,101 +25,58 @@ const ExpenseCalendar: React.FC = () => {
     { skip: !selectedDate }
   );
 
-  const handleDateClick = (date: Date) => setSelectedDate(date);
-
-  const renderContent = () => {
-    if (isLoading)
-      return <p className="text-center text-gray-500">Loading...</p>;
-    if (error)
-      return <p className="text-center text-red-500">Error loading data.</p>;
-    if (!data && selectedDate)
-      return (
-        <p className="text-center mt-6 text-gray-600">
-          No data found for this date.
-        </p>
-      );
-
-    if (data) {
-      return (
-        <div className="mt-6">
-          <h3 className="text-lg font-semibold text-center">
-            Expenses on{" "}
-            {selectedDate?.toLocaleDateString("en-GB", {
-              day: "numeric",
-              month: "short",
-              year: "numeric",
-            })}
-          </h3>
-          <p className="mt-2 mb-4 text-center text-gray-600">
-            Total Cost:{" "}
-            <span className="font-semibold text-gray-900">
-              ${data.totalAmount}
-            </span>
-          </p>
-          <div className="overflow-x-auto">
-            <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="py-2 px-4 border-b font-medium text-gray-600">
-                    #
-                  </th>
-                  <th className="py-2 px-4 border-b font-medium text-gray-600">
-                    Date
-                  </th>
-                  <th className="py-2 px-4 border-b font-medium text-gray-600">
-                    Name
-                  </th>
-                  <th className="py-2 px-4 border-b font-medium text-gray-600">
-                    Category
-                  </th>
-                  <th className="py-2 px-4 border-b font-medium text-gray-600">
-                    Amount
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {data?.data?.map((expense: IExpense, index: number) => (
-                  <tr
-                    key={expense._id}
-                    className="hover:bg-gray-50 transition-colors"
-                  >
-                    <td className="py-3 px-4 text-center">{index + 1}</td>
-                    <td className="py-3 px-4">
-                      {new Date(expense.createdAt).toLocaleDateString("en-GB", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </td>
-                    <td className="py-3 px-4">{expense.name}</td>
-                    <td className="py-3 px-4">{expense.category}</td>
-                    <td className="py-3 px-4 font-semibold text-gray-800">
-                      ${expense.amount}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      );
-    }
-    return null;
-  };
+  const expenses = data?.data ?? []; // Accessing `data.data` safely
 
   return (
-    <div className="max-w-5xl mx-auto p-6">
-      <h2 className="text-3xl font-bold text-center mb-6">Expense Calendar</h2>
+    <div className="p-4 flex">
+      <h2 className="text-center text-2xl font-semibold mb-4">
+        Expense Calendar
+      </h2>
 
-      <div className="mb-6">
-        {/* Display the large calendar, clickable dates */}
-        <Calendar
-          onClickDay={handleDateClick} // Calls the handler when a date is clicked
-          className="mx-auto max-w-3xl text-lg shadow-lg rounded-lg"
-        />
-      </div>
+      <DatePicker
+        selected={selectedDate} // Use selected prop
+        onChange={(date: Date | null) => {
+          setSelectedDate(date);
+        }}
+        inline // Always show the calendar
+        className="border rounded p-2" // Basic styling
+        dayClassName={(date) => {
+          // Optional: Add any custom styles to the days
+          return date ? "dateStyle" : "";
+        }}
+      />
 
-      {renderContent()}
+      {isLoading && <p className="text-center">Loading...</p>}
+      {error && (
+        <p className="text-center text-red-500">Error fetching data.</p>
+      )}
+
+      {!isLoading && !error && selectedDate && expenses.length === 0 && (
+        <p className="text-center">No data available for the selected date.</p>
+      )}
+
+      {expenses.length > 0 && (
+        <div className="overflow-x-auto">
+          <table className=" bg-white border border-gray-200 rounded-lg">
+            <thead className="bg-gray-100 border-b">
+              <tr>
+                <th className="text-left px-4 py-2">Index</th>
+                <th className="text-left px-4 py-2">Name</th>
+                <th className="text-left px-4 py-2">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {expenses.map((expense: ExpenseData, index: number) => (
+                <tr key={expense._id} className="border-b hover:bg-gray-50">
+                  <td className="px-4 py-2">{index + 1}</td>
+                  <td className="px-4 py-2">{expense.name}</td>
+                  <td className="px-4 py-2">৳ {expense.amount.toFixed(2)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };
