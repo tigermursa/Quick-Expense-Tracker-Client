@@ -26,7 +26,10 @@ const ExpenseCalendar: React.FC = () => {
   const userId = user?.data?._id;
 
   const { data, error, isLoading } = useGetSpesificDateDataQuery(
-    { date: selectedDate?.toISOString(), userId },
+    {
+      date: selectedDate ? selectedDate.toLocaleDateString("en-CA") : null,
+      userId,
+    },
     { skip: !selectedDate }
   );
 
@@ -37,8 +40,12 @@ const ExpenseCalendar: React.FC = () => {
   const closeModal = () => setIsModalOpen(false);
 
   const handleDateChange = (date: Date | null) => {
-    setSelectedDate(date);
-    if (date) openModal();
+    if (date) {
+      // Set time to midnight in local timezone
+      const localDate = new Date(date.setHours(0, 0, 0, 0));
+      setSelectedDate(localDate);
+      openModal();
+    }
   };
 
   // Format the date to '3 November 2024' format
