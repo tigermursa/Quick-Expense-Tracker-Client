@@ -123,7 +123,7 @@ const LastWeekExpenses = () => {
   }
 
   return (
-    <div className="p-3 md:p-5 lg:p-10">
+    <div className="p-3 md:p-5 lg:p-10 container-style-design-white">
       <div className="flex flex-col items-center">
         <h1 className="text-2xl font-bold text-center mb-6">
           Last Week Expenses

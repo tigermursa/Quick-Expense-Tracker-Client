@@ -54,3 +54,12 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background-color: #2563eb; /* Tailwind blue-600 */
 }
+
+
+.container-style-design-white {
+  width: 100%;
+  background-image: radial-gradient(circle, rgb(237, 231, 219), transparent 20%, rgb(255, 255, 255));
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: rgb(237, 248, 194);
+}
