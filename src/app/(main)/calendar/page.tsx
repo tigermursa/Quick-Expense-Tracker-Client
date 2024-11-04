@@ -28,24 +28,20 @@ const ExpenseCalendar: React.FC = () => {
   const expenses = data?.data ?? []; // Accessing `data.data` safely
 
   return (
-    <div className="p-4 flex">
-      <h2 className="text-center text-2xl font-semibold mb-4">
-        Expense Calendar
-      </h2>
-
-      <DatePicker
-        selected={selectedDate} // Use selected prop
-        onChange={(date: Date | null) => {
-          setSelectedDate(date);
-        }}
-        inline // Always show the calendar
-        className="border rounded p-2" // Basic styling
-        dayClassName={(date) => {
-          // Optional: Add any custom styles to the days
-          return date ? "dateStyle" : "";
-        }}
-      />
-
+    <div className="p-4 flex flex-col justify-center items-center">
+      <div className="">
+        <DatePicker
+          selected={selectedDate} // Use selected prop
+          onChange={(date: Date | null) => {
+            setSelectedDate(date);
+          }}
+          inline // Always show the calendar
+          dayClassName={(date) => {
+            // Optional: Add any custom styles to the days
+            return date ? "dateStyle" : "";
+          }}
+        />
+      </div>
       {isLoading && <p className="text-center">Loading...</p>}
       {error && (
         <p className="text-center text-red-500">Error fetching data.</p>

@@ -43,7 +43,7 @@ const DataInputForm: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen pt-2 container-style-design">
+    <div className="flex flex-col items-center  h-screen pt-2 container-style-design">
       <SummaryView />
       <div className="w-full max-w-md p-8 rounded-lg">
         <h2 className="mb-6 text-2xl font-bold text-center text-gray-100">
