@@ -5,6 +5,7 @@ import React, { useState, useMemo } from "react";
 import DatePicker from "react-datepicker"; // Use react-datepicker
 import "react-datepicker/dist/react-datepicker.css"; // Import styles for react-datepicker
 import "../../../app/Calendar.css"; // Import the CSS file where the custom scrollbar is styled
+import { useAuth } from "@/hooks/useAuth";
 
 interface ExpenseData {
   _id: string;
@@ -18,9 +19,11 @@ interface ExpenseData {
 }
 
 const ExpenseCalendar: React.FC = () => {
+  const { user } = useAuth();
+
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const userId = "6722690bd9b9d6e6b46aed2a";
+  const userId = user?.data?._id;
 
   const { data, error, isLoading } = useGetSpesificDateDataQuery(
     { date: selectedDate?.toISOString(), userId },
@@ -59,7 +62,9 @@ const ExpenseCalendar: React.FC = () => {
       </div>
 
       {isLoading && <p className="text-center">Loading...</p>}
-      {error && <p className="text-center text-red-500">Error fetching data.</p>}
+      {error && (
+        <p className="text-center text-red-500">Error fetching data.</p>
+      )}
       {!isLoading && !error && selectedDate && expenses.length === 0 && (
         <p className="text-center">No data available for the selected date.</p>
       )}
@@ -93,10 +98,15 @@ const ExpenseCalendar: React.FC = () => {
                 </thead>
                 <tbody>
                   {expenses.map((expense: ExpenseData, index: number) => (
-                    <tr key={expense._id} className="border-b hover:bg-gray-100">
+                    <tr
+                      key={expense._id}
+                      className="border-b hover:bg-gray-100"
+                    >
                       <td className="px-4 py-2">{index + 1}</td>
                       <td className="px-4 py-2">{expense.name}</td>
-                      <td className="px-4 py-2">৳ {expense.amount.toFixed(2)}</td>
+                      <td className="px-4 py-2">
+                        ৳ {expense.amount.toFixed(2)}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
