@@ -55,6 +55,8 @@ const Navbar: React.FC = () => {
 
   return (
     <nav className="bg-gray-800 p-4 shadow-lg">
+
+      <h1 className="text-lg font-bold text-white">Quick Expense Tracker</h1>
       <div className="container mx-auto flex justify-between items-center">
         {/* Hamburger Icon for Mobile */}
         <div className="md:hidden">
