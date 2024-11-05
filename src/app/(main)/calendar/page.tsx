@@ -88,8 +88,8 @@ const ExpenseCalendar: React.FC = () => {
 
             {/* Total amount section */}
             <div className="p-4 text-center rounded-t-lg">
-              <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
-                Total Amount for {formattedDate}: ৳ {totalAmount.toFixed(2)}
+              <h2 className="text-sm sm:text-xl font-semibold text-gray-800">
+                Total:{formattedDate}: ৳ {totalAmount.toFixed(2)}
               </h2>
             </div>
 
