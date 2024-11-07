@@ -56,7 +56,7 @@ const DataInputForm: React.FC = () => {
               htmlFor="name"
               className="block text-gray-200 font-semibold mb-2"
             >
-              Name
+              Name goin
             </label>
             <input
               type="text"
