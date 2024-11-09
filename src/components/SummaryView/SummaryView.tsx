@@ -32,7 +32,7 @@ const SummaryView = () => {
   return (
     <div className="text-center p-4 md:p-8 0 rounded-lg shadow-md">
       <h2 className="text-2xl font-semibold mb-6 text-gray-200">
-        Expense Summary for {data?.data?.uniqueDays} days
+        Expense Summary for {data?.data?.uniqueDays} day
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
         {/* Today */}
