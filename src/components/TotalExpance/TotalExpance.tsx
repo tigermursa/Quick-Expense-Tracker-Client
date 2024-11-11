@@ -237,7 +237,7 @@ export const TotalExpance = () => {
                 Date
               </th>
               <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-400">
-                Total Expense
+                Total Expense pro
               </th>
             </tr>
           </thead>
@@ -265,7 +265,9 @@ export const TotalExpance = () => {
         </table>
       </div>
 
-      <h2 className="text-center mt-10 font-bold">All Expanse Chart and List </h2>
+      <h2 className="text-center mt-10 font-bold">
+        All Expanse Chart and List{" "}
+      </h2>
       {/* Bar Chart for Items */}
       <div className="mb-8" style={{ height: "300px" }}>
         <Bar data={itemChartData} options={itemChartOptions} />
