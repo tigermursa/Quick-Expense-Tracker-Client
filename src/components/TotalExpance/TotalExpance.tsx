@@ -236,7 +236,9 @@ export const TotalExpance = () => {
               <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-400">
                 Date
               </th>
-              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-400"></th>
+              <th className="py-2 px-3 text-xs text-center text-gray-700 border-b border-gray-400">
+                Total Expense
+              </th>
             </tr>
           </thead>
           <tbody>
