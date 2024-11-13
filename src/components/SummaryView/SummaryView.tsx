@@ -5,6 +5,12 @@ import { useAuth } from "@/hooks/useAuth";
 import { useGeExpensesDataForHomeQuery } from "@/redux/features/data/dataApi";
 import CountUp from "react-countup";
 import TodayExpensesModal from "./TodayExpenseModal";
+import { Poppins } from "next/font/google";
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
 
 const SummaryView = () => {
   const { user } = useAuth();
@@ -12,12 +18,13 @@ const SummaryView = () => {
   const [showModal, setShowModal] = useState(false);
 
   // Fetch the expense data only if the userId is defined
-  const { data, isLoading, isError,isFetching } = useGeExpensesDataForHomeQuery(
-    { userId },
-    {
-      skip: !userId, // Skip the query if no userId is available
-    }
-  );
+  const { data, isLoading, isError, isFetching } =
+    useGeExpensesDataForHomeQuery(
+      { userId },
+      {
+        skip: !userId, // Skip the query if no userId is available
+      }
+    );
 
   if (isLoading)
     return <p className="text-center text-lg text-white">Please wait...</p>;
@@ -30,16 +37,18 @@ const SummaryView = () => {
   const todayExpenses = data?.data?.todayExpenses;
 
   return (
-    <div className="text-center p-4 md:p-8 0 rounded-lg shadow-md">
+    <div
+      className={`text-center p-4 md:p-8 0 rounded-lg shadow-md ${poppins.className}`}
+    >
       <h2 className="text-2xl font-semibold mb-6 text-gray-200">
         Expense Summary for {data?.data?.uniqueDays} day
       </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 mb-6 ">
         {/* Today */}
-        <div className="p-4 bg-white rounded-lg shadow-md">
-          <p className="text-sm font-bold text-gray-700 mb-1">Today</p>
+        <div className="p-4 bg-white bg-opacity-20 rounded-md  shadow-md">
+          <p className="text-sm font-bold text-gray-100 mb-1">Today</p>
           <CountUp
-            className="text-xl font-extrabold text-gray-800"
+            className="text-2xl font-extrabold text-gray-100 "
             start={0}
             end={todayTotal}
             duration={2.5}
@@ -52,7 +61,7 @@ const SummaryView = () => {
         <div className="p-4 bg-white rounded-lg shadow-md">
           <p className="text-sm font-bold text-gray-700 mb-1">Last 7 Days</p>
           <CountUp
-            className="text-xl font-extrabold text-gray-800"
+            className="text-2xl font-extrabold text-gray-800"
             start={0}
             end={last7DaysTotal}
             duration={2.5}
@@ -62,10 +71,10 @@ const SummaryView = () => {
         </div>
 
         {/* Last 30 Days */}
-        <div className="p-4 bg-white rounded-lg shadow-md">
+        <div className="p-4 bg-white rounded-md shadow-md">
           <p className="text-sm font-bold text-gray-700 mb-1">Last 30 Days</p>
           <CountUp
-            className="text-xl font-extrabold text-gray-800"
+            className="text-2xl font-extrabold text-gray-800"
             start={0}
             end={last30DaysTotal}
             duration={2.5}
@@ -78,7 +87,7 @@ const SummaryView = () => {
         <div className="p-4 bg-white rounded-lg shadow-md">
           <p className="text-sm font-bold text-gray-700 mb-1">All-Time</p>
           <CountUp
-            className="text-xl font-extrabold text-gray-800"
+            className="text-2xl font-extrabold text-gray-800"
             start={0}
             end={allTimeTotal}
             duration={2.5}
@@ -93,7 +102,7 @@ const SummaryView = () => {
         className="border border-pink-500 bg-gray-950 bg-opacity-10 text-white px-4 py-2 rounded-md shadow-md hover:border-pink-400 mt-5"
         onClick={() => setShowModal(true)}
       >
-        {isFetching? "Loading.." : "Today's List"} 
+        {isFetching ? "Loading.." : "Today's List"}
       </button>
 
       {/* Modal for Today's Expenses */}
