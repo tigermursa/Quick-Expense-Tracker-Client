@@ -5,12 +5,6 @@ import { useAuth } from "@/hooks/useAuth";
 import { useGeExpensesDataForHomeQuery } from "@/redux/features/data/dataApi";
 import CountUp from "react-countup";
 import TodayExpensesModal from "./TodayExpenseModal";
-import { Poppins } from "next/font/google";
-
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
 
 const SummaryView = () => {
   const { user } = useAuth();
@@ -37,9 +31,7 @@ const SummaryView = () => {
   const todayExpenses = data?.data?.todayExpenses;
 
   return (
-    <div
-      className={`text-center p-4 md:p-8 0 rounded-lg shadow-md ${poppins.className}`}
-    >
+    <div className={`text-center p-4 md:p-8 0 rounded-lg shadow-md `}>
       <h2 className="text-2xl font-semibold mb-6 text-gray-200">
         Expense Summary for {data?.data?.uniqueDays} day
       </h2>
