@@ -302,7 +302,7 @@ export const TotalExpance = () => {
                   {expense.category}
                 </td>
                 <td className="py-2 px-3 text-xs text-center border-b border-gray-400">
-                  ${expense.amount.toFixed(2)}
+                  &#2547;{expense.amount.toFixed(2)}
                 </td>
                 <td className="py-2 px-3 text-xs text-center border-b border-gray-400">
                   {new Date(expense.createdAt).toLocaleDateString("en-GB", {
