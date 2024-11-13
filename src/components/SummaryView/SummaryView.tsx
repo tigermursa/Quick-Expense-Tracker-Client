@@ -32,15 +32,15 @@ const SummaryView = () => {
 
   return (
     <div className={`text-center p-4 md:p-8 0 rounded-lg shadow-md `}>
-      <h2 className="text-2xl font-semibold mb-6 text-gray-200">
+      <h2 className="text-4xl font-semibold mb-6 text-gray-200">
         Expense Summary for {data?.data?.uniqueDays} day
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 mb-6 ">
         {/* Today */}
-        <div className="p-4 bg-white bg-opacity-20 rounded-md  shadow-md">
+        <div className="p-4 bg-white bg-opacity-10 rounded-lg  shadow-md">
           <p className="text-sm font-bold text-gray-100 mb-1">Today</p>
           <CountUp
-            className="text-2xl font-extrabold text-gray-100 "
+            className="text-3xl font-extrabold text-gray-100 "
             start={0}
             end={todayTotal}
             duration={2.5}
@@ -50,10 +50,10 @@ const SummaryView = () => {
         </div>
 
         {/* Last 7 Days */}
-        <div className="p-4 bg-white rounded-lg shadow-md">
-          <p className="text-sm font-bold text-gray-700 mb-1">Last 7 Days</p>
+        <div className="p-4 bg-white bg-opacity-10 rounded-lg  shadow-md">
+          <p className="text-sm font-bold text-gray-100 mb-1">Last 7 Days</p>
           <CountUp
-            className="text-2xl font-extrabold text-gray-800"
+            className="text-3xl font-extrabold text-gray-100"
             start={0}
             end={last7DaysTotal}
             duration={2.5}
@@ -63,10 +63,10 @@ const SummaryView = () => {
         </div>
 
         {/* Last 30 Days */}
-        <div className="p-4 bg-white rounded-md shadow-md">
-          <p className="text-sm font-bold text-gray-700 mb-1">Last 30 Days</p>
+        <div className="p-4 bg-white bg-opacity-10 rounded-lg  shadow-md">
+          <p className="text-sm font-bold text-gray-100 mb-1">Last 30 Days</p>
           <CountUp
-            className="text-2xl font-extrabold text-gray-800"
+            className="text-3xl font-extrabold text-gray-100"
             start={0}
             end={last30DaysTotal}
             duration={2.5}
@@ -76,10 +76,10 @@ const SummaryView = () => {
         </div>
 
         {/* All-Time */}
-        <div className="p-4 bg-white rounded-lg shadow-md">
-          <p className="text-sm font-bold text-gray-700 mb-1">All-Time</p>
+        <div className="p-4 bg-white bg-opacity-10 rounded-lg  shadow-md">
+          <p className="text-sm font-bold text-gray-100 mb-1">All-Time</p>
           <CountUp
-            className="text-2xl font-extrabold text-gray-800"
+            className="text-3xl font-extrabold text-gray-100"
             start={0}
             end={allTimeTotal}
             duration={2.5}
