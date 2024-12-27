@@ -116,8 +116,12 @@ const LoginPage: React.FC = () => {
           </button>
         </form>
       </div>
-      <div>
-        <p>Already have account ?</p> <Link>Register</Link>
+      <div className=" text-gray-300 flex">
+        <p className="me-2">Don&apos;t have account ? </p>{" "}
+        <Link href={"/auth/register"} className="underline">
+          {" "}
+          Register now
+        </Link>
       </div>
     </div>
   );
