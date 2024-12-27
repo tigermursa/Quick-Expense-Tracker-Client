@@ -56,7 +56,7 @@ const DataInputForm: React.FC = () => {
               htmlFor="name"
               className="block text-gray-200 font-semibold mb-2"
             >
-              Name goin
+              Name of the product
             </label>
             <input
               type="text"
@@ -109,7 +109,7 @@ const DataInputForm: React.FC = () => {
               htmlFor="amount"
               className="block text-gray-200 font-semibold mb-2"
             >
-              Amount
+              Amount (taka)
             </label>
             <input
               type="number"

@@ -3,6 +3,7 @@ import { useLoginMutation } from "@/redux/features/auth/authApi";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface ILoginFormInput {
   email: string;
@@ -45,7 +46,7 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen container-style-design">
+    <div className="flex justify-center items-center h-screen container-style-design flex-col">
       <div className="w-full max-w-md  p-6 ">
         <h2 className="text-2xl font-bold mb-6 text-gray-100 text-center">
           Login
@@ -66,7 +67,7 @@ const LoginPage: React.FC = () => {
               } rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500`}
               {...register("email", {
                 required: "Email is required",
-                
+
                 pattern: { value: /^\S+@\S+$/i, message: "Invalid email" },
               })}
             />
@@ -92,7 +93,7 @@ const LoginPage: React.FC = () => {
               } rounded-md shadow-sm focus:outline-none focus:ring focus:ring-indigo-500`}
               {...register("password", {
                 required: "Password is required",
-                
+
                 minLength: {
                   value: 6,
                   message: "Password must be at least 6 characters long",
@@ -114,6 +115,9 @@ const LoginPage: React.FC = () => {
             {isLoading ? "Logging in..." : "Login"}
           </button>
         </form>
+      </div>
+      <div>
+        <p>Already have account ?</p> <Link>Register</Link>
       </div>
     </div>
   );
