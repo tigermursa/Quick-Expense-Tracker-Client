@@ -11,6 +11,8 @@ const SummaryView = () => {
   const userId = user?.data?._id;
   const [showModal, setShowModal] = useState(false);
 
+  console.log(userId);
+
   // Fetch the expense data only if the userId is defined
   const { data, isLoading, isError, isFetching } =
     useGeExpensesDataForHomeQuery(
@@ -20,10 +22,18 @@ const SummaryView = () => {
       }
     );
 
+  console.log(data?.data);
+
   if (isLoading)
     return <p className="text-center text-lg text-white">Please wait...</p>;
   if (isError || !data?.data)
-    return <p className="text-center text-lg">Error loading summary data.</p>;
+    return (
+      <div className=" bg-white p-4 rounded-md mt-5">
+        <p className="text-center text-lg text-gray-700 font-semibold ">
+          Welcome! Please input your data
+        </p>
+      </div>
+    );
 
   const { allTimeTotal, last7DaysTotal, last30DaysTotal, todayTotal } =
     data?.data;
