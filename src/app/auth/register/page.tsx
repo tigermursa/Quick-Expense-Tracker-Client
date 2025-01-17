@@ -3,6 +3,7 @@ import { useRegisterMutation } from "@/redux/features/auth/authApi";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 interface IRegisterFormInput {
   name: string;
   email: string;
@@ -32,13 +33,15 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100 container-style-design">
-      <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
+    <div className="flex flex-col justify-center items-center h-screen bg-gray-100 container-style-design">
+      <div className="w-full max-w-md  p-6 rounded-lg shadow-md">
+        <h2 className="text-2xl font-bold mb-6 text-center text-white">
+          Register
+        </h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-gray-100"
               htmlFor="name"
             >
               Name
@@ -60,7 +63,7 @@ const RegisterPage: React.FC = () => {
 
           <div>
             <label
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-gray-100"
               htmlFor="email"
             >
               Email
@@ -85,7 +88,7 @@ const RegisterPage: React.FC = () => {
 
           <div>
             <label
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-gray-100"
               htmlFor="password"
             >
               Password
@@ -113,12 +116,19 @@ const RegisterPage: React.FC = () => {
 
           <button
             type="submit"
-            className="w-full py-2 px-4 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="w-full py-2 px-4 bg-pink-600 text-white rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             disabled={isLoading}
           >
             {isLoading ? "Registering..." : "Register"}
           </button>
         </form>
+      </div>
+      <div className=" text-gray-300 flex mt-5">
+        <p className="me-2">Already have account ? </p>{" "}
+        <Link href={"/auth/login"} className="underline hover:text-blue-400">
+          {" "}
+          Login now
+        </Link>
       </div>
     </div>
   );

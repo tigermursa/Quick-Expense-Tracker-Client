@@ -118,7 +118,7 @@ const LoginPage: React.FC = () => {
       </div>
       <div className=" text-gray-300 flex">
         <p className="me-2">Don&apos;t have account ? </p>{" "}
-        <Link href={"/auth/register"} className="underline">
+        <Link href={"/auth/register"} className="underline hover:text-blue-700">
           {" "}
           Register now
         </Link>
